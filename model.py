@@ -15,13 +15,13 @@ class Position:
 
 	@property
 	def longitude(self):
+		# longitude in radians
 		return self.longitude_degrees * math.pi / 180
 
 	@property
 	def latitude(self):
+		# latitude in radians
 		return self.latitude_degrees * math.pi / 180
-
-
 
 class Zone:
 
@@ -30,8 +30,8 @@ class Zone:
 	MAX_LONGITUDE_DEGREES = 180
 	MIN_LATITUDE_DEGREES = -90
 	MAX_LATITUDE_DEGREES = 90
-	WIDTH_DEGREES = 1
-	HEIGHT_DEGREES = 1
+	WIDTH_DEGREES = 1 # degrees of longitude 
+	HEIGHT_DEGREES = 1 # degrees of latitude
 
 	def __init__(self, corner1, corner2):
 		self.corner1 = corner1
@@ -47,16 +47,16 @@ class Zone:
 	
 	def contains(self, position):
 		return position.longitude >= min(self.corner1.longitude, self.corner2.longitude) and \
-        	position.longitude < max(self.corner1.longitude, self.corner2.longitude) and \
-        	position.latitude >= min(self.corner1.latitude, self.corner2.latitude) and \
-        	position.latitude < max(self.corner1.latitude, self.corner2.latitude)
-            
+			position.longitude < max(self.corner1.longitude, self.corner2.longitude) and \
+			position.latitude >= min(self.corner1.latitude, self.corner2.latitude) and \
+			position.latitude < max(self.corner1.latitude, self.corner2.latitude)
+
 	@classmethod
 	def find_zone_that_contains(cls, position):
 		# Compute the index in the ZONES array that contains the given position
 		longitude_index = int((position.longitude_degrees - cls.MIN_LONGITUDE_DEGREES)/ cls.WIDTH_DEGREES)
 		latitude_index = int((position.latitude_degrees - cls.MIN_LATITUDE_DEGREES)/ cls.HEIGHT_DEGREES)
-		longitude_bins = int((cls.MAX_LONGITUDE_DEGREES - cls.MIN_LONGITUDE_DEGREES) / cls.WIDTH_DEGREES) # 180-(-180) / 1
+		longitude_bins = int((cls.MAX_LONGITUDE_DEGREES - cls.MIN_LONGITUDE_DEGREES)/ cls.WIDTH_DEGREES) # 180-(-180) /1
 		zone_index = latitude_index * longitude_bins + longitude_index
 
 		# Just checking that the index is correct
